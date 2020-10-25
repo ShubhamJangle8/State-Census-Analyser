@@ -8,14 +8,13 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-
 public class StateCensusAnalyser {
-
 	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
-			Iterator<CSVStateCensus> censusCsvIterator = new OpenCSVBuilder().getCSVFileIterator(reader, CSVStateCensus.class);
+			@SuppressWarnings("unchecked")
+			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			Iterator<CSVStateCensus> censusCsvIterator = csvBuilder.
+														 getCSVFileIterator(reader, CSVStateCensus.class);
 			int numberOfEntries = getCount(censusCsvIterator);
 			return numberOfEntries;
 		} catch (NoSuchFileException e) {
@@ -26,7 +25,10 @@ public class StateCensusAnalyser {
 	
 	public int loadStateCodeCensusData(String csvFilePath) throws IOException, CensusAnalyserException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
-			Iterator<StateCodeCsv> stateCodeCsvIterator = new OpenCSVBuilder().getCSVFileIterator(reader, StateCodeCsv.class);
+			@SuppressWarnings({ "unchecked"})
+			ICSVBuilder<StateCodeCsv> csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			Iterator<StateCodeCsv> stateCodeCsvIterator = csvBuilder.
+														  getCSVFileIterator(reader, StateCodeCsv.class);
 			int numberOfEntries = getCount(stateCodeCsvIterator);
 			return numberOfEntries;
 		} catch (NoSuchFileException e) {

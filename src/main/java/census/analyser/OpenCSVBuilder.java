@@ -6,13 +6,14 @@ import java.util.Iterator;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
-public class OpenCSVBuilder {
+@SuppressWarnings("rawtypes")
+public class OpenCSVBuilder<E> implements ICSVBuilder{
 
-	public <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass) throws CensusAnalyserException{
+	@SuppressWarnings("unchecked")
+	public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CensusAnalyserException{
 		try { 
 			CsvToBeanBuilder<E> csvBuilder = new CsvToBeanBuilder<>(reader);
 			csvBuilder.withType(csvClass);
-			csvBuilder.withIgnoreLeadingWhiteSpace(true);
 			CsvToBean<E> csvToBean = csvBuilder.build();
 			return csvToBean.iterator();
 		} catch (RuntimeException e) {

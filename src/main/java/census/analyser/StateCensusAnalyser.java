@@ -13,9 +13,8 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
 
-	public int loadIndiaCensusData(String indiaCensusCsvFilePath) throws CensusAnalyserException, IOException {
-		try {
-			Reader reader = Files.newBufferedReader(Paths.get(indiaCensusCsvFilePath));
+	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException {
+		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
 			CsvToBeanBuilder<CSVStateCensus> csvBuilder = new CsvToBeanBuilder<>(reader);
 			csvBuilder.withType(CSVStateCensus.class);
 			csvBuilder.withIgnoreLeadingWhiteSpace(true);

@@ -3,6 +3,7 @@ package census.analyser;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
@@ -12,7 +13,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
 
-	public int loadIndiaCensusData(String indiaCensusCsvFilePath) throws IOException{
+	public int loadIndiaCensusData(String indiaCensusCsvFilePath) throws CensusAnalyserException, IOException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(indiaCensusCsvFilePath));
 			CsvToBeanBuilder<CSVStateCensus> csvBuilder = new CsvToBeanBuilder<>(reader);
@@ -23,10 +24,11 @@ public class StateCensusAnalyser {
 			Iterable<CSVStateCensus> csvIterable = () -> censusCsvIterator;
 			int numberOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 			return numberOfEntries;
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (RuntimeException e) {
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.INCORRECT_FILE);
+		} catch (NoSuchFileException e) {
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.NO_FILE);
 		}
-		return 0;
 	}
 
 	public static void main(String[] args) {

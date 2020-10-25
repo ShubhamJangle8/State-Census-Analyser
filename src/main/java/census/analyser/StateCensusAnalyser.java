@@ -14,43 +14,42 @@ import com.opencsv.bean.CsvToBeanBuilder;
 public class StateCensusAnalyser {
 
 	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException {
-		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
-			CsvToBeanBuilder<CSVStateCensus> csvBuilder = new CsvToBeanBuilder<>(reader);
-			csvBuilder.withType(CSVStateCensus.class);
-			csvBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<CSVStateCensus> csvToBean = csvBuilder.build();
-			Iterator<CSVStateCensus> censusCsvIterator = csvToBean.iterator();
+		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
+			Iterator<CSVStateCensus> censusCsvIterator = this.getCSVFileIterator(reader, CSVStateCensus.class);
 			Iterable<CSVStateCensus> csvIterable = () -> censusCsvIterator;
 			int numberOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 			return numberOfEntries;
-		} catch (RuntimeException e) {
-			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
 			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.NO_FILE);
+					  						  CensusAnalyserException.ExceptionType.NO_FILE);
 		}
 	}
-
+	
 	public int loadStateCodeCensusData(String csvFilePath) throws IOException, CensusAnalyserException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
-			CsvToBeanBuilder<StateCodeCsv> csvBuilder = new CsvToBeanBuilder<>(reader);
-			csvBuilder.withType(StateCodeCsv.class);
-			csvBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<StateCodeCsv> csvToBean = csvBuilder.build();
-			Iterator<StateCodeCsv> stateCodeCsvIterator = csvToBean.iterator();
+			Iterator<StateCodeCsv> stateCodeCsvIterator = this.getCSVFileIterator(reader, StateCodeCsv.class);
 			Iterable<StateCodeCsv> csvIterable = () -> stateCodeCsvIterator;
 			int numberOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 			return numberOfEntries;
-		} catch (RuntimeException e) {
-			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
 			throw new CensusAnalyserException(e.getMessage(), 
 											  CensusAnalyserException.ExceptionType.NO_FILE);
-		}
+		} 
 	}
 
+	private <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass) throws CensusAnalyserException{
+		try { 
+			CsvToBeanBuilder<E> csvBuilder = new CsvToBeanBuilder<>(reader);
+			csvBuilder.withType(csvClass);
+			csvBuilder.withIgnoreLeadingWhiteSpace(true);
+			CsvToBean<E> csvToBean = csvBuilder.build();
+			return csvToBean.iterator();
+		} catch (RuntimeException e) {
+			throw new CensusAnalyserException(e.getMessage(), 
+											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
+		} 
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to State Census Analyser");
 	}

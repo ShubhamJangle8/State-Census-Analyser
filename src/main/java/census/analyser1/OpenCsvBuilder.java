@@ -10,15 +10,15 @@ import com.opencsv.bean.CsvToBeanBuilder;
 public class OpenCsvBuilder<E> implements ICSVBuilder{
 
 	@SuppressWarnings("unchecked")
-	public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CensusAnalyserException{
+	public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CSVBuilderException{
 		try { 
 			CsvToBeanBuilder<E> csvBuilder = new CsvToBeanBuilder<>(reader);
 			csvBuilder.withType(csvClass);
 			CsvToBean<E> csvToBean = csvBuilder.build();
 			return csvToBean.iterator();
-		} catch (RuntimeException e) {
-			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
+		} catch (IllegalStateException e) {
+			throw new CSVBuilderException(e.getMessage(), 
+					CSVBuilderException.ExceptionType.UNABLE_TO_PARSE);
 		} 
 	}
 	

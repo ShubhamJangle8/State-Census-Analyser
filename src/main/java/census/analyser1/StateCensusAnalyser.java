@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
 public class StateCensusAnalyser {
-	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException {
+	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException, CSVBuilderException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
 			@SuppressWarnings("unchecked")
 			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
@@ -17,13 +17,16 @@ public class StateCensusAnalyser {
 														 getCSVFileIterator(reader, CSVStateCensus.class);
 			int numberOfEntries = getCount(censusCsvIterator);
 			return numberOfEntries;
+		} catch (RuntimeException e) {
+			throw new CensusAnalyserException(e.getMessage(),
+						     				  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
 			throw new CensusAnalyserException(e.getMessage(), 
-					  						  CensusAnalyserException.ExceptionType.NO_FILE);
+											  CensusAnalyserException.ExceptionType.NO_FILE);
 		}
 	}
 	
-	public int loadStateCodeCensusData(String csvFilePath) throws IOException, CensusAnalyserException {
+	public int loadStateCodeCensusData(String csvFilePath) throws CensusAnalyserException, IOException, CSVBuilderException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
 			@SuppressWarnings({ "unchecked"})
 			ICSVBuilder<StateCodeCsv> csvBuilder = CSVBuilderFactory.createCSVBuilder();
@@ -31,10 +34,13 @@ public class StateCensusAnalyser {
 														  getCSVFileIterator(reader, StateCodeCsv.class);
 			int numberOfEntries = getCount(stateCodeCsvIterator);
 			return numberOfEntries;
+		} catch (RuntimeException e) {
+			throw new CensusAnalyserException(e.getMessage(),
+											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
 			throw new CensusAnalyserException(e.getMessage(), 
 											  CensusAnalyserException.ExceptionType.NO_FILE);
-		} 
+}
 	}
 	
 	public <E> int getCount(Iterator<E> iterator) {

@@ -1,9 +1,11 @@
-package census.analyser;
+package census.analyser1;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import org.junit.Test;
+
+import CensusAnalysing.CSVBuilderException;
 
 public class CensusAnalyserTest {
 
@@ -17,9 +19,10 @@ public class CensusAnalyserTest {
 	 * UC1
 	 * Test 1 for a correct count for Census CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenIndianCensusCSVFile_ReturnsCorrectRecords() throws IOException {
+	public void givenIndianCensusCSVFile_ReturnsCorrectRecords() throws IOException, CSVBuilderException {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			int numOfRecords = stateCensusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
@@ -33,9 +36,10 @@ public class CensusAnalyserTest {
 	 * UC1
 	 * Test 2 for a WrongFilePath Exception for Census CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenCSVFile_IfWrongFile_ShouldThrowError() throws IOException {
+	public void givenCSVFile_IfWrongFile_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadIndiaCensusData(WRONG_FILE_PATH);
@@ -49,9 +53,10 @@ public class CensusAnalyserTest {
 	 * UC1
 	 * Test 3 for a Incorrect Extension Exception for Census CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenCSVFile_WhenFileCorrect_ButExtensionIncorrect_ShouldThrowError() throws IOException {
+	public void givenCSVFile_WhenFileCorrect_ButExtensionIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadIndiaCensusData(WRONG_EXTENSION_FILE_PATH);
@@ -65,9 +70,10 @@ public class CensusAnalyserTest {
 	 * UC1
 	 * Test 4 for Incorrect Delimiter exception for Census CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenCSVFile_WhenFileCorrect_ButDelimiterIncorrect_ShouldThrowError() throws IOException {
+	public void givenCSVFile_WhenFileCorrect_ButDelimiterIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
@@ -81,9 +87,10 @@ public class CensusAnalyserTest {
 	 * UC1
 	 * Test for Incorrect Header Exception for Census CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenCSVFile_WhenFileCorrect_ButHeaderIncorrect_ShouldThrowError() throws IOException {
+	public void givenCSVFile_WhenFileCorrect_ButHeaderIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadIndiaCensusData(CSV_FILE_PATH);
@@ -97,12 +104,14 @@ public class CensusAnalyserTest {
 	 * UC2
 	 * Test for a proper count of records for State Code CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenStateCodeCSVFile_ReturnsCorrectCount() throws IOException {
+	public void givenStateCodeCSVFile_ReturnsCorrectCount() throws IOException, CSVBuilderException {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			int numOfStateRecords = stateCensusAnalyser.loadStateCodeCensusData(STATE_CODE_CSV_FILE_PATH);
+			System.out.println(numOfStateRecords);
 			assertEquals(38, numOfStateRecords);
 		}catch(CensusAnalyserException e) {
 			e.printStackTrace();
@@ -113,9 +122,10 @@ public class CensusAnalyserTest {
 	 * UC2
 	 * Test for Wrong File Exception for state code CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenStateCodeCSVFile_IfWrongFile_ShouldThrowError() throws IOException {
+	public void givenStateCodeCSVFile_IfWrongFile_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadStateCodeCensusData(WRONG_FILE_PATH);
@@ -129,9 +139,10 @@ public class CensusAnalyserTest {
 	 * UC2
 	 * Test for Incorrect Extension Exception for state code CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenStateCodeCSVFile_WhenFileCorrect_ButExtensionIncorrect_ShouldThrowError() throws IOException {
+	public void givenStateCodeCSVFile_WhenFileCorrect_ButExtensionIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadStateCodeCensusData(WRONG_EXTENSION_FILE_PATH);
@@ -145,9 +156,10 @@ public class CensusAnalyserTest {
 	 * UC2
 	 * Test for Incorrect Delimiter Exception for State Code CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenStateCodeCSVFile_WhenFileCorrect_ButDelimiterIncorrect_ShouldThrowError() throws IOException {
+	public void givenStateCodeCSVFile_WhenFileCorrect_ButDelimiterIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadStateCodeCensusData(INDIA_CENSUS_CSV_FILE_PATH);
@@ -161,9 +173,10 @@ public class CensusAnalyserTest {
 	 * UC2
 	 * Test for Incorrect Header Exception For State Code CSV
 	 * @throws IOException
+	 * @throws CSVBuilderException 
 	 */
 	@Test
-	public void givenStateCodeCSVFile_WhenFileCorrect_ButHeaderIncorrect_ShouldThrowError() throws IOException {
+	public void givenStateCodeCSVFile_WhenFileCorrect_ButHeaderIncorrect_ShouldThrowError() throws IOException, CSVBuilderException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			stateCensusAnalyser.loadStateCodeCensusData(CSV_FILE_PATH);
@@ -172,5 +185,4 @@ public class CensusAnalyserTest {
 			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE, e.type);
 		}
 	}
-
 }

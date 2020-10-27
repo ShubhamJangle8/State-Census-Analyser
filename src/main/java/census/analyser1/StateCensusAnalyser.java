@@ -6,16 +6,21 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.StreamSupport;
+
+import CensusAnalysing.CSVBuilderException;
+import CensusAnalysing.CSVBuilderFactory;
+import CensusAnalysing.ICSVBuilder;
 
 public class StateCensusAnalyser {
 	public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, IOException, CSVBuilderException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
 			@SuppressWarnings("unchecked")
 			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<CSVStateCensus> censusCsvIterator = csvBuilder.
-														 getCSVFileIterator(reader, CSVStateCensus.class);
-			int numberOfEntries = getCount(censusCsvIterator);
+			List<CSVStateCensus> censusCsvList = csvBuilder.
+												 getCSVFileList(reader, CSVStateCensus.class);
+			int numberOfEntries = censusCsvList.size();
 			return numberOfEntries;
 		} catch (RuntimeException e) {
 			throw new CensusAnalyserException(e.getMessage(),

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import org.junit.Test;
 
+import CensusAnalysing.CSVBuilderException;
+
 public class CensusAnalyserTest {
 
 	private static final String INDIA_CENSUS_CSV_FILE_PATH = "C://Users//DELL//eclipse-workspace//CensusAnalyserGradel//IndiaStateCensusData.csv";
@@ -109,6 +111,7 @@ public class CensusAnalyserTest {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			int numOfStateRecords = stateCensusAnalyser.loadStateCodeCensusData(STATE_CODE_CSV_FILE_PATH);
+			System.out.println(numOfStateRecords);
 			assertEquals(38, numOfStateRecords);
 		}catch(CensusAnalyserException e) {
 			e.printStackTrace();

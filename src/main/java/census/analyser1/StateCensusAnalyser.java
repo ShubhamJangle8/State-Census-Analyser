@@ -18,16 +18,13 @@ public class StateCensusAnalyser {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
 			@SuppressWarnings("unchecked")
 			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			List<CSVStateCensus> censusCsvList = csvBuilder.
-												 getCSVFileList(reader, CSVStateCensus.class);
+			List<CSVStateCensus> censusCsvList = csvBuilder.getCSVFileList(reader, CSVStateCensus.class);
 			int numberOfEntries = censusCsvList.size();
 			return numberOfEntries;
 		} catch (RuntimeException e) {
-			throw new CensusAnalyserException(e.getMessage(),
-						     				  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
-			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.NO_FILE);
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.NO_FILE);
 		}
 	}
 	
@@ -35,16 +32,13 @@ public class StateCensusAnalyser {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) { 
 			@SuppressWarnings({ "unchecked"})
 			ICSVBuilder<StateCodeCsv> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<StateCodeCsv> stateCodeCsvIterator = csvBuilder.
-														  getCSVFileIterator(reader, StateCodeCsv.class);
+			Iterator<StateCodeCsv> stateCodeCsvIterator = csvBuilder.getCSVFileIterator(reader, StateCodeCsv.class);
 			int numberOfEntries = getCount(stateCodeCsvIterator);
 			return numberOfEntries;
 		} catch (RuntimeException e) {
-			throw new CensusAnalyserException(e.getMessage(),
-											  CensusAnalyserException.ExceptionType.INCORRECT_FILE);
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		} catch (NoSuchFileException e) {
-			throw new CensusAnalyserException(e.getMessage(), 
-											  CensusAnalyserException.ExceptionType.NO_FILE);
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.NO_FILE);
 }
 	}
 	

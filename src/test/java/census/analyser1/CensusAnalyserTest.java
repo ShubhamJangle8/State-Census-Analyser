@@ -200,7 +200,7 @@ public class CensusAnalyserTest {
 	public void GivenStateCensusData_WhenSortedOnState_ShouldReturnSortedResultWith1stElement() throws IOException, CSVBuilderException {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-			String sortedCensusData = stateCensusAnalyser.getSortedStateCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+			String sortedCensusData = stateCensusAnalyser.getSortedStateCensusData();
 			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 			assertEquals("Andhra Pradesh", censusCsv[0].state);
 		} catch(CensusAnalyserException e) {
@@ -217,9 +217,48 @@ public class CensusAnalyserTest {
 	public void GivenStateCensusData_WhenSortedOnState_ShouldReturnSortedResultWithLastElement() throws IOException, CSVBuilderException {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-			String sortedCensusData = stateCensusAnalyser.getSortedStateCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+			stateCensusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+			String sortedCensusData = stateCensusAnalyser.getSortedStateCensusData();
 			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 			assertEquals("West Bengal", censusCsv[censusCsv.length-1].state);
+		} catch(CensusAnalyserException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * UC4
+	 * Test for sorting on state code csv according to state code returning correct first element
+	 * @throws IOException
+	 * @throws CSVBuilderException
+	 */
+	@Test
+	public void GivenStateCodeCsv_WhenSortedOnStateCode_ShouldReturnSortedResultWithFirstElement() throws IOException, CSVBuilderException {
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			stateCensusAnalyser.loadStateCodeCensusData(STATE_CODE_CSV_FILE_PATH);
+			String sortedCensusData = stateCensusAnalyser.getSortedStateCodeData();
+			StateCodeCsv[] stateCodeCsv = new Gson().fromJson(sortedCensusData, StateCodeCsv[].class);
+			assertEquals("AD", stateCodeCsv[0].stateCode);
+		} catch(CensusAnalyserException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * UC4
+	 * Test for sorting on state code csv according to state code returning correct last element
+	 * @throws IOException
+	 * @throws CSVBuilderException
+	 */
+	@Test
+	public void GivenStateCodeCsv_WhenSortedOnStateCode_ShouldReturnSortedResultWithLastElement() throws IOException, CSVBuilderException {
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			stateCensusAnalyser.loadStateCodeCensusData(STATE_CODE_CSV_FILE_PATH);
+			String sortedCensusData = stateCensusAnalyser.getSortedStateCodeData();
+			StateCodeCsv[] stateCodeCsv = new Gson().fromJson(sortedCensusData, StateCodeCsv[].class);
+			assertEquals("WB", stateCodeCsv[stateCodeCsv.length-1].stateCode);
 		} catch(CensusAnalyserException e) {
 			e.printStackTrace();
 		}
